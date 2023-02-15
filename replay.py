@@ -3,7 +3,7 @@
 # Created on: 11.4.2019
 import sys, os, io
 import inputstreamhelper
-import xbmc, xbmcaddon, xbmcgui, xbmcplugin
+import xbmc, xbmcaddon, xbmcgui, xbmcplugin, xbmcvfs
 import urllib
 import datetime
 import utils
@@ -12,7 +12,7 @@ from skylink import StreamNotResolvedException
 _url = sys.argv[0]
 _handle = int(sys.argv[1])
 _addon = xbmcaddon.Addon()
-_profile = xbmc.translatePath(_addon.getAddonInfo('profile'))
+_profile = xbmcvfs.translatePath(_addon.getAddonInfo('profile'))
 _python3 = sys.version_info[0] >= 3
 
 REPLAY_GAP = 5  # gap after program ends til it shows in replay
@@ -145,7 +145,7 @@ def replay(sl, locId, duration, lastLocId):
         xbmcgui.Dialog().ok(_addon.getAddonInfo('name'), _addon.getLocalizedString(e.id))
         xbmcplugin.setResolvedUrl(_handle, False, xbmcgui.ListItem())
         return
-    
+
     if info:
         is_helper = inputstreamhelper.Helper(info['protocol'], drm=info['drm'])
         if is_helper.check_inputstream():

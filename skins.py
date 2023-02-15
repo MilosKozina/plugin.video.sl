@@ -14,15 +14,15 @@ import random
 SKINS = {'skin.estuary':'Estuary','skin.confluence':'Confluence'}
 
 def cleanup(copy_settings, destination, destsettings):
-    shutil.rmtree(xbmc.translatePath(destination))
+    shutil.rmtree(xbmcvfs.translatePath(destination))
     if copy_settings:
-        shutil.rmtree(xbmc.translatePath(destsettings))
+        shutil.rmtree(xbmcvfs.translatePath(destsettings))
 
 def modify():
     __language__ = xbmcaddon.Addon(id='plugin.video.sl').getLocalizedString
     if not xbmcgui.Dialog().yesno(xbmc.getLocalizedString(19194), __language__(30372)):
         return
-    
+
     skin = xbmc.getSkinDir() #simplified skin detection
     if skin not in SKINS:
         xbmcgui.Dialog().ok(__language__(30373), __language__(30374))
@@ -43,9 +43,9 @@ def modify():
         copy_settings = xbmcgui.Dialog().yesno(SKINS[skin], __language__(30376))
     else:
         copy_settings = False
-    
+
     try:
-        shutil.copytree(xbmc.translatePath('special://skin'), xbmc.translatePath(destination))
+        shutil.copytree(xbmcvfs.translatePath('special://skin'), xbmcvfs.translatePath(destination))
         #alter copy addon.xml
         with closing(xbmcvfs.File(destination + '/addon.xml')) as f:
             addonxml = f.read()
@@ -55,7 +55,7 @@ def modify():
             f.write(addonxml)
         if copy_settings:
             #TODO special://profile
-            shutil.copytree(xbmc.translatePath('special://userdata/addon_data/' + skin), xbmc.translatePath(destsettings))
+            shutil.copytree(xbmcvfs.translatePath('special://userdata/addon_data/' + skin), xbmcvfs.translatePath(destsettings))
 
         #update language
         enpo = destination + '/language/resource.language.en_gb/strings.po'
@@ -67,13 +67,13 @@ def modify():
             skstrings = f.read()
         with closing(xbmcvfs.File(czpo)) as f:
             czstrings = f.read()
-        
+
         newId = str(random.randint(31000,31999))
         newIdString = '"#' + newId + '"'
         while newIdString in enstrings or newIdString in skstrings or newIdString in czstrings:
             newId = str(random.randint(31000,31999))
             newIdString = '"#' + newId + '"'
-        
+
         enstrings += '\nmsgctxt ' + newIdString + '\nmsgid "Skylink Archive"\nmsgstr "Skylink Archive"\n'
         skstrings += '\nmsgctxt ' + newIdString + '\nmsgid "Skylink Archive"\nmsgstr "Skylink Archív"\n'
         czstrings += '\nmsgctxt ' + newIdString + '\nmsgid "Skylink Archive"\nmsgstr "Skylink Archiv"\n'
@@ -97,7 +97,7 @@ def modify():
                 xbmcgui.Dialog().ok(SKINS[skin], __language__(30377))
                 return
             content = content[0]
-            
+
             toRemove = []
             for item in content:
                 for child in item:
@@ -121,7 +121,7 @@ def modify():
 
             with closing(xbmcvfs.File(xmlfile, 'w')) as f:
                 f.write(ET.tostring(root,encoding="utf-8"))
-            
+
         elif skin == 'skin.confluence':
             xmlfile = destination + '/720p/IncludesHomeMenuItems.xml'
             with closing(xbmcvfs.File(xmlfile)) as f:
@@ -137,7 +137,7 @@ def modify():
                 xbmcgui.Dialog().ok(SKINS[skin], __language__(30377))
                 return
             content = content[0]
-            
+
             toRemove = []
             for control in content:
                 for child in control:
