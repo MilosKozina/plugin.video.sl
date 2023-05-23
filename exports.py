@@ -70,9 +70,9 @@ def create_epg(channels, epg, path):
                         file.write(u'<desc>%s</desc>\n' % html_escape(p['description']))
                     if 'cover' in p:
                         file.write(u'<icon src="%s"/>\n' % html_escape(p['cover']))
-                    if 'genres' in p and len(p['genres']) > 0:
+                    if 'genres' in p and not p['genres'] is None and len(p['genres']) > 0:
                         file.write('<category>%s</category>\n' % html_escape(', '.join(p['genres'])))
-                    if 'credits' in p and len(p['credits']) > 0:
+                    if 'credits' in p and not p['credits'] is None and len(p['credits']) > 0:
                         file.write(u'<credits>\n')
                         for cr in p['credits']:
                             if 'p' in cr:
