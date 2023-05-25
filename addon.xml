@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="plugin.video.sl" version="1.7.4" name="Skylink Live TV" provider-name="Sorien, cache-sk">
+<addon id="plugin.video.sl" version="1.7.5" name="Skylink Live TV" provider-name="Sorien, cache-sk">
 <requires>
   <import addon="xbmc.python" version="3.0.0"/>
   <import addon="script.module.requests" version="2.18.4"/>
@@ -19,6 +19,10 @@
   <forum>https://www.xbmc-kodi.cz/prispevek-skylink-livetv-addon-beta</forum>
   <source>https://github.com/Sorien/plugin.video.sl</source>
   <news>
+[B]1.7.5[/B]
+- oprava generování EPG, když je description (či jiný field) prázdný
+[B]1.7.4[/B]
+- oprava pro Kodi 20 - kvůli xbmc/xbmc#19301
 [B]1.7.3[/B]
 - fix pre novy stream server blokujuci kodi
 [B]1.7.2[/B]
