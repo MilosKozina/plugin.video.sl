@@ -157,7 +157,7 @@ class Skylink:
 
             self._data.secret = data['secret']
             self._data.id = data['id']
-            
+
             self._store_session()
         except:
             self._data.clear()
@@ -246,9 +246,9 @@ class Skylink:
 
         stream = res.json()
 
-        if not 'url' in stream or not 'drm' in stream: 
+        if not 'url' in stream or not 'drm' in stream:
             raise StreamNotResolvedException()
-           
+
         mpd_headers = {'Origin': self._url, 'Referer': self._url, 'User-Agent': UA}
         str_mpd_headers = self._headers_str(mpd_headers)
         drm_la_headers = {'Origin': self._url, 'Referer': self._url, 'Content-Type': 'application/octet-stream',
@@ -260,8 +260,8 @@ class Skylink:
             'drm': 'com.widevine.alpha',
             'key': stream['drm']['laurl'] + '|' + self._headers_str(drm_la_headers) + '|R{SSM}|'
         }
-        
-        
+
+
 
     def epg(self, channels, from_date, to_date, recalculate=True):
         """Returns EPG data
@@ -296,7 +296,10 @@ class Skylink:
 
             for data in epg_info:
                 if 'description' in data:
-                    data['description'] = data['description'].strip()
+                    if not data['description'] is None:
+                        data['description'] = data['description'].strip()
+                    else:
+                        data['description'] = '...'
                 if 'cover' in data:
                     # url in web page - https://m7cz.solocoo.tv/m7cziphone/mmchan/mpimages/447x251/_hash_.jpg
                     # url in data - mmchan/mpimages/_hash_.jpg
@@ -340,10 +343,10 @@ class Skylink:
 
         stream = res.json()
 
-        if not 'url' in stream or not 'drm' in stream: 
+        if not 'url' in stream or not 'drm' in stream:
             raise StreamNotResolvedException()
-           
-        mpd_headers = {'Origin': self._url, 'Referer': self._url, 'User-Agent': UA, 
+
+        mpd_headers = {'Origin': self._url, 'Referer': self._url, 'User-Agent': UA,
                        'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Site': 'same-origin'}
         str_mpd_headers = self._headers_str(mpd_headers)
         drm_la_headers = {'Origin': self._url, 'Referer': self._url, 'Content-Type': 'application/octet-stream',
@@ -405,10 +408,10 @@ class Skylink:
         except:
             raise StreamNotResolvedException({'error':'not json'})
 
-        if not 'url' in stream or not 'drm' in stream: 
+        if not 'url' in stream or not 'drm' in stream:
             raise StreamNotResolvedException({'error':'not valid'})
-           
-        mpd_headers = {'Origin': self._url, 'Referer': self._url, 'User-Agent': UA, 
+
+        mpd_headers = {'Origin': self._url, 'Referer': self._url, 'User-Agent': UA,
                        'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Site': 'same-origin'}
         str_mpd_headers = self._headers_str(mpd_headers)
         drm_la_headers = {'Origin': self._url, 'Referer': self._url, 'Content-Type': 'application/octet-stream',
